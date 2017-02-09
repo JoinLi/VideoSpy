@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerArrayAdap
                 startActivity(intent);
             }
         });
+        adapter.addAll(list);
     }
 
 
