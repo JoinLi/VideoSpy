@@ -2,4 +2,6 @@
     <string name="app_name">"视频间谍"</string>
     <string name="action_settings">设置</string>
     <string name="sousuo">请输入要搜索的内容</string>
+    <string name="snackbar_context">搜索数据不能为空</string>
+    <string name="snackbar_err">加载失败,请尝试刷新</string>
 </resources>

@@ -2,19 +2,26 @@ package ly.com.videospy.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.easyrecyclerview.decoration.DividerDecoration;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -38,20 +45,18 @@ import okhttp3.Call;
 public class MovieActivity extends AppCompatActivity implements RecyclerArrayAdapter.OnLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
     private EasyRecyclerView recyclerView;
     private MovieAdapter adapter;
+    private WebView mWebView;
     private List<MovieBean> list = new ArrayList<MovieBean>();
     private int page = 1;
-    private LinearLayout liner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_movie);
         initView();
     }
 
     private void initView() {
-        liner = (LinearLayout) findViewById(R.id.liner);
-        liner.setVisibility(View.GONE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("视频选择");
         setSupportActionBar(toolbar);
@@ -64,6 +69,15 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
         DividerDecoration itemDecoration = new DividerDecoration(Color.GRAY, Util.dip2px(this, 0.5f), Util.dip2px(this, 72), 0);
         itemDecoration.setDrawLastItem(false);
         recyclerView.addItemDecoration(itemDecoration);
+        mWebView = (WebView) findViewById(R.id.notice_web_view);
+        // 设置WebView的类型
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        // 支持javascript
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        getWindow().setFormat(PixelFormat.TRANSLUCENT);
+        mWebView.getView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        mWebView.setDrawingCacheEnabled(true);
         adapter = new MovieAdapter(this);
         recyclerView.setAdapterWithProgress(adapter);
         adapter.setMore(R.layout.view_more, this);
@@ -82,14 +96,16 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
         adapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Intent intent=new Intent(MovieActivity.this, PlayMovieActivity.class);
-                intent.putExtra("url",adapter.getAllData().get(position).getMovie_api());
-                startActivity(intent);
+//                Intent intent=new Intent(MovieActivity.this, PlayMovieActivity.class);
+//                intent.putExtra("url",adapter.getAllData().get(position).getMovie_api());
+//                startActivity(intent);
+                initMovieData(Constant.Movie_Number_Path + list.get(position).getMovie_api());
             }
         });
         recyclerView.setRefreshListener(this);  //下拉刷新
 //        adapter.addAll(list);
         onRefresh();
+
 
     }
 
@@ -157,7 +173,7 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
                         }
 
                     });
-
+//        initMovieData(Constant.Movie_Number_Path + list.get(0).getMovie_api());
         } catch (Exception e) {
             adapter.stopMore();
             e.printStackTrace();
@@ -165,8 +181,40 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
         }
 
 
+//        LogUtil.m(Constant.Movie_Number_Path + adapter.getAllData().get(0).getMovie_api());
     }
 
+
+    private void initMovieData(String path) {
+        OkHttpUtils
+                .get()
+                .url(path)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+//                        hideProgress();
+                    }
+
+                    @Override
+                    public void onResponse(String string, int id) {
+                        try {
+//                            String htmlData = subString(string);
+//                            hideProgress();
+                            Document doc = Jsoup.parse(string);
+                            String links = doc.select("iframe").attr("src");
+//                            mWebView.loadData(string, HtmlUtil.MIME_TYPE, HtmlUtil.ENCODING);
+                            mWebView.loadUrl(links);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+
+                });
+
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
