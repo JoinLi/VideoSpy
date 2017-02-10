@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ly.com.videospy.activity.MovieActivity;
+import ly.com.videospy.activity.SettingActivity;
 import ly.com.videospy.adapter.PersonAdapter;
 import ly.com.videospy.bean.InforBean;
 import ly.com.videospy.util.Constant;
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerArrayAdap
 
             case R.id.action_settings:
                 //设置
-//                startActivity(new Intent(MainActivity.this, MoreActivity.class));
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 return true;
 
             default:

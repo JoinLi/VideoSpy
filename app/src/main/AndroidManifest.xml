@@ -33,6 +33,9 @@
         <activity
             android:name=".activity.PlayMovieActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".activity.SettingActivity"
+             />
     </application>
 
 </manifest>
