@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerArrayAdap
 
     private void initData() {
         recyclerView.showProgress();
-        String path = Constant.MoviePath + context;
+        String path = Constant.MoviePath_Sou + context;
         try {
             OkHttpUtils
                     .get()
@@ -173,17 +173,22 @@ public class MainActivity extends AppCompatActivity implements RecyclerArrayAdap
                                 }
 
                                 Document doc = Jsoup.parse(string);
-                                Elements links = doc.select("div.plist").select("ul.list_tab_img");
+                                Elements links = doc.select("div.container");
                                 Elements elements = links.select("li");
                                 for (Element element : elements) {
                                     InforBean bean = new InforBean();
                                     bean.setMovie_url(element.select("a").attr("href"));
-                                    bean.setImg_url(element.select("img").attr("src"));
-                                    bean.setTitle(element.select("b").text());
-                                    element.select("b").text();
+                                    String imgUrl = element.select("img").attr("src");
+                                    if (imgUrl.trim().startsWith("/")) {
+                                        imgUrl = Constant.Movie_Main + imgUrl;
+                                        //添加到html
+                                        element.select("img").attr("src", imgUrl);
+                                    }
+                                    bean.setImg_url(imgUrl);
+                                    bean.setTitle(element.select("a").attr("title"));
                                     LogUtil.m("链接" + element.select("a").attr("href"));
-                                    LogUtil.m("图片" + element.select("img").attr("src"));
-                                    LogUtil.m("标题" + element.select("b").text());
+                                    LogUtil.m("图片" + imgUrl);
+                                    LogUtil.m("标题" + element.select("a").attr("title"));
                                     list.add(bean);
 
                                 }

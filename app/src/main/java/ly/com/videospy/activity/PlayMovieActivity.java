@@ -1,6 +1,5 @@
 package ly.com.videospy.activity;
 
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebViewClient;
 
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -61,8 +59,8 @@ public class PlayMovieActivity extends AppCompatActivity {
         mWebView.getView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         mWebView.setDrawingCacheEnabled(true);
 //        mWebView.setWebViewClient(new MyWebViewClient());
-        initData(Constant.Movie_Number_Path + getIntent().getStringExtra("url"));
-//        mWebView.loadUrl(Constant.Movie_Number_Path + getIntent().getStringExtra("url"));
+        initData(Constant.Movie_Main + getIntent().getStringExtra("url"));
+//        mWebView.loadUrl(Constant.Movie_Main + getIntent().getStringExtra("url"));
     }
 
     private void showProgress() {

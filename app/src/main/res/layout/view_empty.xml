@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="18sp"
-        android:text="暂无数据"/>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:drawablePadding="10dp"
+    android:drawableTop="@mipmap/ic_err_context"
+    android:text="没有找到内容"
+    android:textSize="18sp" />

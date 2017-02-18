@@ -1,21 +1,15 @@
 package ly.com.videospy.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
@@ -99,7 +93,7 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
 //                Intent intent=new Intent(MovieActivity.this, PlayMovieActivity.class);
 //                intent.putExtra("url",adapter.getAllData().get(position).getMovie_api());
 //                startActivity(intent);
-                initMovieData(Constant.Movie_Number_Path + list.get(position).getMovie_api());
+                initMovieData(Constant.Movie_Main + list.get(position).getMovie_api());
             }
         });
         recyclerView.setRefreshListener(this);  //下拉刷新
@@ -123,7 +117,7 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
 
 
     private void initData() {
-        String path = Constant.Movie_Number_Path + getIntent().getStringExtra("url");
+        String path = Constant.Movie_Main + getIntent().getStringExtra("url");
         try {
             OkHttpUtils
                     .get()
@@ -173,7 +167,7 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
                         }
 
                     });
-//        initMovieData(Constant.Movie_Number_Path + list.get(0).getMovie_api());
+//        initMovieData(Constant.Movie_Main + list.get(0).getMovie_api());
         } catch (Exception e) {
             adapter.stopMore();
             e.printStackTrace();
@@ -181,7 +175,7 @@ public class MovieActivity extends AppCompatActivity implements RecyclerArrayAda
         }
 
 
-//        LogUtil.m(Constant.Movie_Number_Path + adapter.getAllData().get(0).getMovie_api());
+//        LogUtil.m(Constant.Movie_Main + adapter.getAllData().get(0).getMovie_api());
     }
 
 

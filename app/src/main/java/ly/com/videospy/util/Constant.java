@@ -5,8 +5,8 @@ package ly.com.videospy.util;
  */
 public class Constant {
 
-    public static final String MoviePath = "http://api.hongshishui.cn/dianying2/search.php?keywords=";
-    public static final String Movie_Number_Path ="http://api.hongshishui.cn/dianying2/";
+    public static final String MoviePath_Sou = "http://www.meiyouad.com/search?op=0&kw=";
+    public static final String Movie_Main ="http://www.meiyouad.com";
 
 
 }
